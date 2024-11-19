@@ -2,12 +2,12 @@ from enum import Enum
 
 
 class TextType(Enum):
-    NORMAL_TEXT = 'normal'
-    BOLD_TEXT = 'bold'
-    ITALIC_TEXT = 'italic'
-    CODE_TEXT = 'code'
-    LINK_TEXT = 'link'
-    IMAGE_TEXT = 'image'
+    NORMAL_TEXT: str = 'normal'
+    BOLD_TEXT: str = 'bold'
+    ITALIC_TEXT: str = 'italic'
+    CODE_TEXT: str = 'code'
+    LINK_TEXT: str = 'link'
+    IMAGE_TEXT: str = 'image'
 
 
 class TextNode():
@@ -17,11 +17,13 @@ class TextNode():
         self.url: str = url
 
     def __eq__(self, other: 'TextNode'):
-        if (self.text == other.text and
-            self.text_type == other.text_type and
-                self.url == other.url):
+        text_is_equal = self.text == other.text
+        text_type_is_equal = self.text_type == other.text_type
+        url_is_equal = self.url == other.url
+        if (text_is_equal and text_type_is_equal and url_is_equal):
             return True
-        return False
+        else:
+            return False
 
     def __repr__(self):
         return f'TextNode({self.text}, {self.text_type.value}, {self.url})'
