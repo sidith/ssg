@@ -39,6 +39,19 @@ class TestTextNode(unittest.TestCase):
 
         self.assertNotEqual(node, node2)
 
+    def test_repr(self):
+        no_url_node: TextNode = TextNode(
+            'This is a string', TextType.NORMAL_TEXT)
+        no_url_node_repr = "TextNode('This is a string', 'normal')"
+
+        self.assertEqual(no_url_node.__repr__(), no_url_node_repr)
+
+        url_node: TextNode = TextNode(
+            'This is a string', TextType.BOLD_TEXT, 'www.google.com')
+        url_node_repr = "TextNode('This is a string', 'bold', 'www.google.com')"
+
+        self.assertEqual(url_node.__repr__(), url_node_repr)
+
 
 if __name__ == "__main__":
     unittest.main()
