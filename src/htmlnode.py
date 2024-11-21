@@ -1,4 +1,6 @@
 from typing import Optional
+from textnode import TextType, TextNode
+import tags
 
 
 class HTMLNode:
@@ -76,3 +78,26 @@ class ParentNode(HTMLNode):
         for child in self.children:
             body += child.to_html()
         return opening_tag + body + closing_tag
+
+
+def text_node_to_html_node(text_node: TextNode) -> HTMLNode:
+    if text_node is None:
+        raise ValueError("Text Node was None")
+    match(text_node.text_type):
+        case(TextType.NORMAL_TEXT):
+            return LeafNode(value=text_node.text)
+        case(TextType.BOLD_TEXT):
+            return LeafNode(tag=tags.BOLD, value=text_node.text)
+        case(TextType.ITALIC_TEXT):
+            return LeafNode(tag=tags.MOOD, value=text_node.text)
+        case(TextType.CODE_TEXT):
+            return LeafNode(tag=tags.CODE, value=text_node.text)
+        case(TextType.LINK_TEXT):
+            url_as_prop: dict = {'href': text_node.url}
+            return LeafNode(tag=tags.LINK, value=text_node.text, props=url_as_prop)
+        case(TextType.IMAGE_TEXT):
+            alt_text_and_link_as_props: dict = {
+                'href': text_node.url, 'alt': text_node.text}
+            return LeafNode(tag=tags.IMAGE, props=alt_text_and_link_as_props)
+        case _:
+            raise ValueError('Unexpected TextType')

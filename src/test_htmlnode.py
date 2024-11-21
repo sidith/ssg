@@ -1,5 +1,6 @@
 import unittest
-from htmlnode import HTMLNode, LeafNode, ParentNode
+from htmlnode import HTMLNode, LeafNode, ParentNode, text_node_to_html_node
+from textnode import TextNode, TextType
 import tags
 
 
@@ -92,6 +93,21 @@ class TestParentNode(unittest.TestCase):
                               "<p><b>Bold text</b>Normal text<i>Italic text</i>Normal text</p>"
                               "<p><b>Bold text</b>Normal text<i>Italic text</i>Normal text</p></html>")
         self.assertEqual(expected_html, html_node.to_html())
+
+
+class TestTextNodeToHTMLNode(unittest.TestCase):
+    def setUp(self) -> None:
+        self.null_node: None = None
+        self.unexpted_text_type_node = TextNode(
+            text="Bad Text Type", text_type='Bad Text Type')
+
+    def test_null_node_raises_error(self):
+        with self.assertRaises(ValueError):
+            text_node_to_html_node(self.null_node)
+
+    def test_unexpected_text_type_raises_error(self):
+        with self.assertRaises(ValueError):
+            text_node_to_html_node(self.unexpted_text_type_node)
 
 
 if __name__ == "__main__":
